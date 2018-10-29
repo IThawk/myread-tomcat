@@ -37,6 +37,12 @@ public class CatalinaProperties {
 
     private static final Log log = LogFactory.getLog(CatalinaProperties.class);
 
+    /**
+     * 1.Properties类与Properties配置文件
+     *
+     *Properties类继承自Hashtable类并且实现了Map接口，
+     * 也是使用一种键值对的形式来保存属性集。不过Properties有特殊的地方，就是它的键和值都是字符串类型。
+     */
     private static Properties properties = null;
 
 

@@ -133,7 +133,13 @@ public final class Bootstrap {
      */
     private Object catalinaDaemon = null;
 
-
+    /**
+     * Java类加载器ClassLoader总结
+     * JAVA类装载方式，有两种:
+     *
+     * 1.隐式装载， 程序在运行过程中当碰到通过new 等方式生成对象时，隐式调用类装载器加载对应的类到jvm中。
+     * 2.显式装载， 通过class.forname()等方法，显式加载需要的类
+     */
     ClassLoader commonLoader = null;
     ClassLoader catalinaLoader = null;
     ClassLoader sharedLoader = null;
@@ -141,7 +147,9 @@ public final class Bootstrap {
 
     // -------------------------------------------------------- Private Methods
 
-
+    /**
+     * 初始化类加载器
+     */
     private void initClassLoaders() {
         try {
             commonLoader = createClassLoader("common", null);
@@ -158,7 +166,13 @@ public final class Bootstrap {
         }
     }
 
-
+    /***
+     * 创建类加载器
+     * @param name
+     * @param parent
+     * @return
+     * @throws Exception
+     */
     private ClassLoader createClassLoader(String name, ClassLoader parent)
         throws Exception {
 
@@ -247,6 +261,7 @@ public final class Bootstrap {
 
     /**
      * Initialize daemon.
+     * 用于初始化启动类以及其中的方法
      * @throws Exception Fatal initialization error
      */
     public void init() throws Exception {
@@ -448,16 +463,22 @@ public final class Bootstrap {
     /**
      * Main method and entry point when starting Tomcat via the provided
      * scripts.
-     *
+     *注释：这个入库类是通过启动  Tomcat  的启动命令中的：
+     *（PRGDIR=`dirname "$PRG"`
+     * EXECUTABLE=catalina.sh）
+     *  一步一步找到：org.apache.catalina.startup.Bootstrap "$@" start的启动入口
      * @param args Command line arguments to be processed
      */
     public static void main(String args[]) {
-
+        /**
+         * private static final Object daemonLock = new Object();一个静态对象作为锁
+         */
         synchronized (daemonLock) {
             if (daemon == null) {
                 // Don't set daemon until init() has completed
                 Bootstrap bootstrap = new Bootstrap();
                 try {
+                    //初始化入口类
                     bootstrap.init();
                 } catch (Throwable t) {
                     handleThrowable(t);
